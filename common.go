@@ -15,7 +15,9 @@ type Context struct {
 	Method            string
 	Params            json.RawMessage
 	Notify            NotifyFunc
+	NotifyOther       NotifyFunc
 	Call              CallFunc
+	CallOther         CallFunc
 	Context           contextpkg.Context // can be nil
 	ConnectionDetails ConnectionDetails
 }
