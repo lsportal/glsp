@@ -5,15 +5,19 @@ import (
 	"encoding/json"
 )
 
-type NotifyFunc func(method string, params any)
-type CallFunc func(method string, params any, result any)
+type (
+	NotifyFunc func(method string, params any)
+	CallFunc   func(method string, params any, result any)
+)
 
 type Context struct {
-	Method  string
-	Params  json.RawMessage
-	Notify  NotifyFunc
-	Call    CallFunc
-	Context contextpkg.Context // can be nil
+	Method      string
+	Params      json.RawMessage
+	Notify      NotifyFunc
+	Call        CallFunc
+	CallOther   CallFunc
+	NotifyOther NotifyFunc
+	Context     contextpkg.Context // can be nil
 }
 
 type Handler interface {
