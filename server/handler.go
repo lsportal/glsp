@@ -28,6 +28,16 @@ func (self *Server) handle(context contextpkg.Context, connection *jsonrpc2.Conn
 			}
 		},
 		Context: context,
+		ConnectionDetails: func() glsp.ConnectionDetails {
+			connection_id := context.Value("connection_id")
+			s, ok := connection_id.(int)
+			if !ok {
+				panic("connection_id is not valid")
+			}
+			return glsp.ConnectionDetails{
+				Id: s,
+			}
+		}(),
 	}
 
 	if request.Params != nil {

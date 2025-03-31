@@ -10,14 +10,19 @@ import (
 	"github.com/tliron/commonlog"
 )
 
+var connection_id = 0
+
 func (self *Server) newStreamConnection(stream io.ReadWriteCloser) *jsonrpc2.Conn {
 	handler := self.newHandler()
 	connectionOptions := self.newConnectionOptions()
 
 	context, cancel := contextpkg.WithTimeout(contextpkg.Background(), self.StreamTimeout)
+	context = contextpkg.WithValue(context, "connection_id", connection_id)
+	connection_id++
 	defer cancel()
 
-	return jsonrpc2.NewConn(context, jsonrpc2.NewBufferedStream(stream, jsonrpc2.VSCodeObjectCodec{}), handler, connectionOptions...)
+	jsonrpc2 := jsonrpc2.NewConn(context, jsonrpc2.NewBufferedStream(stream, jsonrpc2.VSCodeObjectCodec{}), handler, connectionOptions...)
+	return jsonrpc2
 }
 
 func (self *Server) newWebSocketConnection(socket *websocket.Conn) *jsonrpc2.Conn {
