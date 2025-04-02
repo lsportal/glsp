@@ -1,7 +1,7 @@
 package server
 
 import (
-	"io"
+	"net"
 
 	"github.com/gorilla/websocket"
 	"github.com/tliron/commonlog"
@@ -9,7 +9,7 @@ import (
 
 // See: https://github.com/sourcegraph/go-langserver/blob/master/main.go#L179
 
-func (self *Server) ServeStream(stream io.ReadWriteCloser, log commonlog.Logger) {
+func (self *Server) ServeStream(stream net.Conn, log commonlog.Logger) {
 	if log == nil {
 		log = self.Log
 	}

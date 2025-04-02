@@ -30,7 +30,7 @@ func (self *Server) handle(context contextpkg.Context, connection *jsonrpc2.Conn
 		Context: context,
 		ConnectionDetails: func() glsp.ConnectionDetails {
 			connection_id := context.Value("connection_id")
-			s, ok := connection_id.(int)
+			s, ok := connection_id.(string)
 			if !ok {
 				panic("connection_id is not valid")
 			}

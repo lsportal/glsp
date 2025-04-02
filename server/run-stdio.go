@@ -5,11 +5,11 @@ import (
 	"os"
 )
 
-func (self *Server) RunStdio() error {
-	self.Log.Notice("reading from stdin, writing to stdout")
-	self.ServeStream(Stdio{}, nil)
-	return nil
-}
+// func (self *Server) RunStdio() error {
+// 	self.Log.Notice("reading from stdin, writing to stdout")
+// 	self.ServeStream(Stdio{}, nil)
+// 	return nil
+// }
 
 type Stdio struct{}
 

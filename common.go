@@ -8,7 +8,7 @@ import (
 type NotifyFunc func(method string, params any)
 type CallFunc func(method string, params any, result any)
 type ConnectionDetails struct {
-	Id int
+	Id string
 }
 
 type Context struct {
