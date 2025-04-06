@@ -8,9 +8,11 @@ import (
 	"github.com/tliron/glsp"
 )
 
+type CurrentConnections map[string]*jsonrpc2.Conn
+
 var (
 	DefaultTimeout     = time.Minute
-	currentConnections []*jsonrpc2.Conn
+	currentConnections = make(CurrentConnections)
 )
 
 //
@@ -21,7 +23,7 @@ type Server struct {
 	Handler            glsp.Handler
 	LogBaseName        string
 	Debug              bool
-	CurrentConnections []*jsonrpc2.Conn
+	CurrentConnections map[string]*jsonrpc2.Conn
 
 	Log              commonlog.Logger
 	Timeout          time.Duration

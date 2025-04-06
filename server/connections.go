@@ -19,7 +19,7 @@ func (self *Server) newStreamConnection(stream net.Conn) *jsonrpc2.Conn {
 	defer cancel()
 
 	jsonrpc2 := jsonrpc2.NewConn(context, jsonrpc2.NewBufferedStream(stream, jsonrpc2.VSCodeObjectCodec{}), handler, connectionOptions...)
-	self.CurrentConnections = append(self.CurrentConnections, jsonrpc2)
+	self.CurrentConnections[stream.RemoteAddr().String()] = jsonrpc2
 	return jsonrpc2
 }
 
@@ -31,7 +31,6 @@ func (self *Server) newWebSocketConnection(socket *websocket.Conn) *jsonrpc2.Con
 	defer cancel()
 
 	jsonrpc2 := jsonrpc2.NewConn(context, wsjsonrpc2.NewObjectStream(socket), handler, connectionOptions...)
-	self.CurrentConnections = append(self.CurrentConnections, jsonrpc2)
 	return jsonrpc2
 }
 

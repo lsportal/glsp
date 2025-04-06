@@ -27,9 +27,9 @@ func (self *Server) handle(context contextpkg.Context, connection *jsonrpc2.Conn
 				self.Log.Error(err.Error())
 			}
 		},
-		CallOther: func(method string, params any, result any) {
-			for _, conn := range self.CurrentConnections {
-				if conn == connection {
+		CallOther: func(method string, params any, result any, client string) {
+			for currentClient, conn := range self.CurrentConnections {
+				if conn == connection || client != currentClient {
 					continue
 				}
 				if err := conn.Call(context, method, params, result); err != nil {
@@ -37,9 +37,9 @@ func (self *Server) handle(context contextpkg.Context, connection *jsonrpc2.Conn
 				}
 			}
 		},
-		NotifyOther: func(method string, params any) {
-			for _, conn := range self.CurrentConnections {
-				if conn == connection {
+		NotifyOther: func(method string, params any, client string) {
+			for currentClient, conn := range self.CurrentConnections {
+				if conn == connection || client != currentClient {
 					continue
 				}
 				if err := conn.Notify(context, method, params); err != nil {

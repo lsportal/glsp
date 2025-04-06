@@ -20,6 +20,7 @@ func (self *Server) newNetworkListener(network string, address string) (*net.Lis
 		if err != nil {
 			return nil, err
 		}
+		self.Log.Critical("Using TLS certificate from environment variables")
 		listener = tls.NewListener(listener, &tls.Config{
 			Certificates: []tls.Certificate{cert},
 		})
