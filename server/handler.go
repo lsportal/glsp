@@ -27,26 +27,6 @@ func (self *Server) handle(context contextpkg.Context, connection *jsonrpc2.Conn
 				self.Log.Error(err.Error())
 			}
 		},
-		CallOther: func(method string, params any, result any, client string) {
-			for currentClient, conn := range self.CurrentConnections {
-				if conn == connection || client != currentClient {
-					continue
-				}
-				if err := conn.Call(context, method, params, result); err != nil {
-					self.Log.Error(err.Error())
-				}
-			}
-		},
-		NotifyOther: func(method string, params any, client string) {
-			for currentClient, conn := range self.CurrentConnections {
-				if conn == connection || client != currentClient {
-					continue
-				}
-				if err := conn.Notify(context, method, params); err != nil {
-					self.Log.Error(err.Error())
-				}
-			}
-		},
 		Context: context,
 		ConnectionDetails: func() glsp.ConnectionDetails {
 			connection_id := context.Value("connection_id")

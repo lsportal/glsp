@@ -18,9 +18,7 @@ func (self *Server) newStreamConnection(stream net.Conn) *jsonrpc2.Conn {
 	context = contextpkg.WithValue(context, "connection_id", stream.RemoteAddr().String())
 	defer cancel()
 
-	jsonrpc2 := jsonrpc2.NewConn(context, jsonrpc2.NewBufferedStream(stream, jsonrpc2.VSCodeObjectCodec{}), handler, connectionOptions...)
-	self.CurrentConnections[stream.RemoteAddr().String()] = jsonrpc2
-	return jsonrpc2
+	return jsonrpc2.NewConn(context, jsonrpc2.NewBufferedStream(stream, jsonrpc2.VSCodeObjectCodec{}), handler, connectionOptions...)
 }
 
 func (self *Server) newWebSocketConnection(socket *websocket.Conn) *jsonrpc2.Conn {
@@ -30,8 +28,7 @@ func (self *Server) newWebSocketConnection(socket *websocket.Conn) *jsonrpc2.Con
 	context, cancel := contextpkg.WithTimeout(contextpkg.Background(), self.WebSocketTimeout)
 	defer cancel()
 
-	jsonrpc2 := jsonrpc2.NewConn(context, wsjsonrpc2.NewObjectStream(socket), handler, connectionOptions...)
-	return jsonrpc2
+	return jsonrpc2.NewConn(context, wsjsonrpc2.NewObjectStream(socket), handler, connectionOptions...)
 }
 
 func (self *Server) newConnectionOptions() []jsonrpc2.ConnOpt {
